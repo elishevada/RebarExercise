@@ -1,30 +1,16 @@
-﻿namespace RebarExercise.Models
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System.Drawing;
+
+namespace RebarExercise.Models
 {
+
+	//public record MenuShakeR(Shake MenuShake, [BsonId]  Guid MenuShakeId,double PriceL,double PriceM,double PriceS );
+	public record OrderShakeR(Shake OrderShake,double Price, Guid OrderShakeId);
 	public class Shake
 	{
-		public Guid ShakeId { get; set; }
-		public string Name { get; set; }
+		
+		public string Name { get; set; }//because thay wanted the same name like the menue shakes
 		public string Description { get; set; }
-		//public Sizes Size { get; set; }
-		public double PriceL { get; set; }
-		public double PriceM { get; set; }
-		public double PriceS { get; set; }
-
-		//public enum Sizes
-		//{
-		//	L,
-		//	M,
-		//	S,
-		//}
-		public Shake(string name,string description,double priceL, double priceM, double priceS) {
-			ShakeId = Guid.NewGuid();
-			Name = name;
-			Description = description;
-			PriceL = priceL;
-			PriceM = priceM;
-			PriceS = priceS;
-		}
-			
 
 	}
 }
