@@ -3,7 +3,7 @@
 	public class Account
 	{
 		
-		public double OrdersTotal { get; set; }
+		public decimal OrdersTotal { get; set; }
 		public List<Order> Orders { get; set; }
 		public Account()
 		{

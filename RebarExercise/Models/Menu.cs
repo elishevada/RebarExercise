@@ -2,19 +2,19 @@
 {
 	public class Menu
 	{
-		public List<MenuShake> MenuShakes { get; set; }
+		public List<Shake> Shake { get; set; }
 		public Menu()
 		{
-			MenuShakes = new List<MenuShake>();
+			Shake = new List<Shake>();
 			
 		}
 
-		public void addShake(MenuShake shake)
+		public void addShake(Shake shake)
 		{
 			//take all shakes from database
 
 			//add to database a shake
-			MenuShakes.Add(shake);// add to this list 
+			Shake.Add(shake);// add to this list 
 			
 			
 		}
