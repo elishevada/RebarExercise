@@ -6,12 +6,15 @@ namespace RebarExercise.Models
 	public class Order
 	{
 		[BsonId]
-		public Guid OrderId { get; set; }
-		public OrderShake Shakes { get; set; }
-		public decimal TotalShakes { get; set; }
-		public string customersName { get; set; }
-		public DateTime OrderDate { get; set; }
-		public Discount Discount { get; set; }
+		public Guid OrderId { get; }= Guid.NewGuid();
+        public List<OrderShake>? Shakes { get; set; }
+        [BsonElement("totalShakes")]
+        public decimal TotalShakes { get; set; }
+        [BsonElement("customersName")]
+        public string CustomersName { get; set; }= string.Empty;
+        [BsonElement("orderDateCreation")]
+        public DateTime OrderDateCreation { get; set; }= DateTime.Now;
+		public List<Discount>? Discounts { get; set; }
 		//public List<OrderShake> OrderShakes { get; set;}//i need a list of shakes or list of id of shakes 
 		
 		

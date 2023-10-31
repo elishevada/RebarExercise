@@ -1,11 +1,17 @@
-﻿namespace RebarExercise.Models
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace RebarExercise.Models
 {
 	public class OrderShake
 	{
-
-		public ShakeBase Shake { get; set; }
-		public Size ShakeSize { get; set; }	
-		public decimal Price { get; set; }
+        //[BsonId]
+        //public Guid OrderShakeId { get;} = Guid.NewGuid();
+        //public ShakeBasicDetails ShakeBasicDetails { get; set; }
+		public Shake? Shake { get; set; }//not null
+        [BsonElement("shakeSize")]
+        public Size ShakeSize { get; set; }
+        [BsonElement("price")]
+        public decimal Price { get; set; }
 		public enum Size
 		{
 			Small,

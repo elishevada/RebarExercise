@@ -1,83 +1,65 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using RebarExercise.Data;
+using RebarExercise.Models;
+using MongoDB.Driver;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace RebarExercise.Controllers
+[ApiController]
+[Route("api/[controller]")]
+public class OrdersController : ControllerBase
 {
-	public class AccountController : Controller
-	{
-		// GET: AccountController
-		public ActionResult Index()
-		{
-			return View();
-		}
+    private readonly MongoDBContext _context;
 
-		// GET: AccountController/Details/5
-		public ActionResult Details(int id)
-		{
-			return View();
-		}
+    public OrdersController(MongoDBContext context)
+    {
+        _context = context;
+    }
+    //  public ActionResult index()
+    //  {
 
-		// GET: AccountController/Create
-		public ActionResult Create()
-		{
-			return View();
-		}
+    //return  
+    //  }
 
-		// POST: AccountController/Create
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
+    [HttpGet]
+    public async Task<List<Order>> Get()//could be instead of menu class//list 
+    {
+        return await _context.Orders.Find(_ => true).ToListAsync();
+    }
 
-		// GET: AccountController/Edit/5
-		public ActionResult Edit(int id)
-		{
-			return View();
-		}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Order>> Get(Guid id)////////guid 
+    {
+        var order = await _context.Orders.Find(o => o.OrderId == id).FirstOrDefaultAsync();
 
-		// POST: AccountController/Edit/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Edit(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
+        if (order == null)
+        {
+            return NotFound();
+        }
 
-		// GET: AccountController/Delete/5
-		public ActionResult Delete(int id)
-		{
-			return View();
-		}
+        return order;
+    }
 
-		// POST: AccountController/Delete/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
-	}
+    [HttpPost]
+    public async Task<ActionResult<Order>> Create(Order order)
+    {
+        foreach(var shake in order.Shakes)
+        {
+            order.TotalShakes += shake.Price;
+        }
+        
+        if (order.Shakes.Count() > 10&& order.CustomersName!=null)
+        {
+            return NotFound();//turn that is too many for a order 
+        }
+        await _context.Orders.InsertOneAsync(order);
+        return CreatedAtRoute(new { id = order.OrderId }, order);
+    }
+    //public ActionResult Shake()
+    //{
+    //       return View();
+    //   }
+
+
 }
