@@ -21,8 +21,7 @@
             string add="id";
         }
         @foreach (var shake in Model.AllMenuShakes)
-        {
-            
+        { 
             <div class="rowSetMain">
                 <div>
                     <input type="checkbox" id=@shake.MenuShakeId.ToString() onclick="myFunction('@shake.MenuShakeId.ToString()')">
@@ -37,7 +36,7 @@
                     <div>LARGE: @shake.PriceL </div>
                 </div>
                 <div >
-                    <select id="string.Concat(@shake.MenuShakeId.ToString(),add )" onchange="selectChangedFunc('@shake.MenuShakeId.ToString()',0)">
+                    <select id="@string.Concat(@shake.MenuShakeId.ToString(),add )" onchange="selectChangedFunc('@shake.MenuShakeId.ToString()',0)">
                         <option value="None">None</option>
                         <option value="L">L</option>
                         <option value="M">M</option>
@@ -82,57 +81,40 @@
     var sizes=[];
     var shakesIdsForSavingSizesOrder=[];
     function myFunction(id) {
-        console.log(id);//
         if(allChoosenShakes.includes(id)){
             const index = allChoosenShakes.indexOf(id);
             if (index > -1) { 
                 allChoosenShakes.splice(index, 1); 
             }
-            selectChangedFunc(id, 1);
-            console.log(allChoosenShakes);
-            console.log(allChoosenShakes.join(","));
-            
+            selectChangedFunc(id, 1);  
         }
-         else{
-             
-            allChoosenShakes.push(id);
-            console.log(allChoosenShakes);//
-            console.log(allChoosenShakes.join(","));//
-            
+         else{            
+            allChoosenShakes.push(id);            
          }
         $("#shakesSelected").val(allChoosenShakes.join(","));
        
     }
     function selectChangedFunc(id,flag){
-        console.log(shakesIdsForSavingSizesOrder);//
-        console.log(sizes);//
-        if (flag == 1) {
+         if (flag == 1) {
             const index = shakesIdsForSavingSizesOrder.indexOf(id);
             if (index > -1) {
                 sizes.splice(index, 1);
                 shakesIdsForSavingSizesOrder.splice(index, 1);
             }
-            var selectElement = document.getElementById(id, "id");
+            var selectElement = document.getElementById(id + "id");
             selectElement.value = "None";
-            console.log("מפונקציה אחרת לאחר הורדה של האיידי ולאחר ששמו נונ ");//
-            console.log(shakesIdsForSavingSizesOrder);//
-            console.log(sizes);//
-        }
-        var value = document.getElementById(id,"id").value;
+       }
+        
+        var Newid=id+"id";
+        var value = document.getElementById(Newid).value;
         if (value != "None") {
             const index = shakesIdsForSavingSizesOrder.indexOf(id);
             if (index > -1) {
                 sizes.splice(index, 1);
                 shakesIdsForSavingSizesOrder.splice(index, 1);
-                console.log("מלא נל לאחר הורדה בגלל ששינה ");//
-                console.log(shakesIdsForSavingSizesOrder);//
-                console.log(sizes);//
             }
             shakesIdsForSavingSizesOrder.push(id);
             sizes.push(value);
-            console.log("מלא נל לאחר הוספה ");//
-            console.log(shakesIdsForSavingSizesOrder);//
-            console.log(sizes);//
         }
         else {
             const index = shakesIdsForSavingSizesOrder.indexOf(id);

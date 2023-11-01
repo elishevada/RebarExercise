@@ -16,8 +16,6 @@ namespace RebarExercise.Models
         public DateTime OrderDateCreation { get; set; }= DateTime.Now;
         public DateTime OrderEndDate { get; set; }
         public List<Discount> Discounts { get; set; }
-		//public List<OrderShake> OrderShakes { get; set;}//i need a list of shakes or list of id of shakes 
-		
 		
 	}
 }
