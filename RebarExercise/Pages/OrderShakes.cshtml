@@ -1,0 +1,157 @@
+﻿@page
+@model RebarExercise.Pages.OrderShakesModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<form method="post" enctype="multipart/form-data" onsubmit="return checkValidation()">
+
+    <div >מה תרצו להזמין </div>
+    <div>
+        <label >Name:</label>
+        <input id="nameTagId" ><br><br>
+    </div>
+
+    
+    <div class="allShakes">
+        @{
+            string add="id";
+        }
+        @foreach (var shake in Model.AllMenuShakes)
+        { 
+            <div class="rowSetMain">
+                <div>
+                    <input type="checkbox" id=@shake.MenuShakeId.ToString() onclick="myFunction('@shake.MenuShakeId.ToString()')">
+                </div>
+                <div class ="colSetDetails">
+                    <h1>@shake.Name </h1>
+                    <h2>@shake.Description </h2>
+                </div>
+                <div class="colSetPrices">
+                    <div>SMALL: @shake.PriceS </div>
+                    <div>MEDIUM: @shake.PriceM </div>
+                    <div>LARGE: @shake.PriceL </div>
+                </div>
+                <div >
+                    <select id="@string.Concat(@shake.MenuShakeId.ToString(),add )" onchange="selectChangedFunc('@shake.MenuShakeId.ToString()',0)">
+                        <option value="None">None</option>
+                        <option value="L">L</option>
+                        <option value="M">M</option>
+                        <option value="S">S</option>
+                    </select>
+                </div>
+            </div>
+        }
+    </div>
+    <input  id="shakesSelected" asp-for="OrderShakesId" />
+    <input  id="sizesId" asp-for="ShakesIdsForSavingSizesOrder" />
+    <input  id="sizes" asp-for="Sizes" />
+
+    <button type="submit" class="bSubmit"> סיום הזמנה </button>
+    <div id="message" class="messagAlert" ></div>
+</form>
+
+<style>
+    .messagAlert{
+        color: red;
+    }
+    .rowSetMain {
+        display: flex;
+        flex-flow: row-reverse;
+        justify-content: space-around;
+    }
+
+    .colSetDetails {
+        margin-top:-40px;
+    }
+
+    .allShakes {
+        display:flex;
+        flex-flow:column;
+        justify-content:space-between;
+    }
+</style>
+
+<script>
+
+    var allChoosenShakes = [];
+    var sizes=[];
+    var shakesIdsForSavingSizesOrder=[];
+    function myFunction(id) {
+        if(allChoosenShakes.includes(id)){
+            const index = allChoosenShakes.indexOf(id);
+            if (index > -1) { 
+                allChoosenShakes.splice(index, 1); 
+            }
+            selectChangedFunc(id, 1);  
+        }
+         else{            
+            allChoosenShakes.push(id);            
+         }
+        $("#shakesSelected").val(allChoosenShakes.join(","));
+       
+    }
+    function selectChangedFunc(id,flag){
+         if (flag == 1) {
+            const index = shakesIdsForSavingSizesOrder.indexOf(id);
+            if (index > -1) {
+                sizes.splice(index, 1);
+                shakesIdsForSavingSizesOrder.splice(index, 1);
+            }
+            var selectElement = document.getElementById(id + "id");
+            selectElement.value = "None";
+       }
+        
+        var Newid=id+"id";
+        var value = document.getElementById(Newid).value;
+        if (value != "None") {
+            const index = shakesIdsForSavingSizesOrder.indexOf(id);
+            if (index > -1) {
+                sizes.splice(index, 1);
+                shakesIdsForSavingSizesOrder.splice(index, 1);
+            }
+            shakesIdsForSavingSizesOrder.push(id);
+            sizes.push(value);
+        }
+        else {
+            const index = shakesIdsForSavingSizesOrder.indexOf(id);
+            if (index > -1) {
+                sizes.splice(index, 1);
+                shakesIdsForSavingSizesOrder.splice(index, 1);
+            }
+            
+        }
+        $("#sizesId").val(shakesIdsForSavingSizesOrder.join(","));
+        $("#sizes").val(sizes.join(","));
+    }
+        
+        
+    
+    function checkValidation(){
+        if (allChoosenShakes.length!=shakesIdsForSavingSizesOrder.length){
+            document.getElementById("message").textContent = "You have one shak that you did not choose the size you want";
+            alert("You have one shak that you did not choose the size you want");
+            return false;
+        }
+        if (allChoosenShakes.length >10 ) {
+            document.getElementById("message").textContent = "You have more than 10 shakes";
+            alert("You have more than 10 shakes");
+            return false;
+        }
+        if (allChoosenShakes.length < 1) {
+            document.getElementById("message").textContent = "Minimum one shake to order";
+             alert("Minimum one shake to order");
+            return false;
+        }
+        if (document.getElementById("nameTagId").value == "") {
+            document.getElementById("message").textContent = "You did not write your name";
+            alert("You did not write your name");
+            return false;
+        }
+        return true;
+    }
+
+</script>
