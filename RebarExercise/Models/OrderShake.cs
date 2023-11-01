@@ -12,11 +12,12 @@ namespace RebarExercise.Models
         public Size ShakeSize { get; set; }
         [BsonElement("price")]
         public decimal Price { get; set; }
-		public enum Size
-		{
-			Small,
-			Medium,
-			Large,
-		}
+		
 	}
+    public enum Size
+    {
+        Small,
+        Medium,
+        Large,
+    }
 }

@@ -16,13 +16,14 @@ public class ShakesController : ControllerBase
 	{
 		_context = context;
 	}
-  //  public ActionResult index()
-  //  {
+	//public ActionResult index()
+	//{
 
-		//return  
-  //  }
+	//	return View();
 
-    [HttpGet]
+	//}
+
+	[HttpGet]
 	public async Task<List<Shake>> Get()//could be instead of menu class//list 
 	{
 		return await _context.Shakes.Find(_ => true).ToListAsync();
